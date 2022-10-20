@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
-import axios from "../axios";
+
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPosts, fetchTags} from "../redux/slices/posts";
 
@@ -14,6 +14,8 @@ export const Home = () => {
 
     const dispatch = useDispatch()
     const {posts, tags} = useSelector(state => state.posts)
+    const userData = useSelector((state) => state.auth.data)
+    console.log(userData)
 
     const isPostsLoading = posts.status === 'loading'
     const isTagsLoading = tags.status === 'loading'
@@ -39,13 +41,13 @@ export const Home = () => {
             <Post
               id={obj._id}
               title={obj.title}
-              imageUrl={obj.imageURL}
+              imageUrl={obj.imageUrl ?`https://blog-fox.herokuapp.com${obj.imageUrl}` : ''}
               user={obj.user}
               createdAt={obj.createdAt}
               viewsCount={obj.viewsCount}
               commentsCount={3}
               tags={obj.tags}
-              isEditable
+              isEditable={userData?._id === obj.user._id}
               key={index}
             />
           ))}

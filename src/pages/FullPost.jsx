@@ -5,6 +5,7 @@ import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 import {useParams} from "react-router-dom";
 import axios from "../axios";
+import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
 
@@ -23,12 +24,14 @@ const [loading, setLoading] = useState(true)
        return <Post isLoading={true} />
     }
 
+    console.log(data)
+
   return (
     <>
       <Post
           id={data._id}
           title={data.title}
-          imageUrl={data.imageURL}
+          imageUrl={data.imageUrl ? `https://blog-fox.herokuapp.com${data.imageUrl}` : ''}
           user={data.user}
           createdAt={data.createdAt}
           viewsCount={data.viewsCount}
@@ -36,9 +39,7 @@ const [loading, setLoading] = useState(true)
           tags={data.tags}
           isFullPost
       >
-        <p>
-            {data.text}
-        </p>
+       <ReactMarkdown children={data.text} />
       </Post>
       <CommentsBlock
         items={[
